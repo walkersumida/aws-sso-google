@@ -59,8 +59,7 @@ func run() error {
 	var rootCmd = &cobra.Command{
 		Use:     "aws-sso-google",
 		Version: "0.1.0",
-		Short:   "",
-		Long:    "",
+		Short:   "Acquire AWS STS credentials via Google Workspace SAML in a browser",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cred, err := samlAuth(awsRoleArn, profile, idpID, spID, username, clean)
 			if err != nil {
