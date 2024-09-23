@@ -12,6 +12,10 @@ import (
 	"github.com/walkersumida/aws-sso-google/path"
 )
 
+type SAMLer interface {
+	Signin() (*Response, error)
+}
+
 type SAML struct {
 	AwsRoleArn string // required
 	Clean      bool
@@ -19,6 +23,8 @@ type SAML struct {
 	SpID       string // required
 	Username   string
 }
+
+var _ SAMLer = &SAML{}
 
 type Response struct {
 	PrincipalArn string
