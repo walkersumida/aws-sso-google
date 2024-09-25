@@ -13,11 +13,7 @@
 ### Build from source
 
 ```bash
-git clone git@github.com:walkersumida/aws-sso-google.git
-cd aws-sso-google
-go build -ldflags='-s -w'
-
-sudo mv ./aws-sso-google /usr/local/bin # or any other directory in your $PATH
+go install github.com/walkersumida/aws-sso-google@latest
 ```
 
 ### Install executable binary
