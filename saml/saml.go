@@ -90,8 +90,13 @@ func (s *SAML) Signin() (*Response, error) {
 
 	var samlResponse string
 	var errInRoute error
-	page.Route("**/*", func(route playwright.Route) {
-		route.Continue()
+	err = page.Route("**/*", func(route playwright.Route) {
+		err = route.Continue()
+		if err != nil {
+			errInRoute = fmt.Errorf("could not continue: %w", err)
+			return
+		}
+
 		if route.Request().URL() == AwsSAMLSigninURL {
 			req, err := route.Request().PostData()
 			if err != nil {
@@ -107,6 +112,9 @@ func (s *SAML) Signin() (*Response, error) {
 			}
 		}
 	})
+	if err != nil {
+		return nil, fmt.Errorf("could not route: %w", err)
+	}
 
 	_, err = page.Goto(
 		s.buildSamlURL(),
@@ -125,7 +133,9 @@ func (s *SAML) Signin() (*Response, error) {
 		}
 
 		if cnt > 0 {
-			page.Locator("input[type=\"email\"]").First().Fill(s.Username)
+			if err := page.Locator("input[type=\"email\"]").First().Fill(s.Username); err != nil {
+				return nil, fmt.Errorf("could not fill username: %w", err)
+			}
 		}
 	}
 

@@ -47,7 +47,7 @@ func (a *Auth) SAMLAuth(awsRoleArn, profile, idpID, spID, username string, clean
 		return "", err
 	}
 
-	a.Credential.SetAccessKeyId(stsRes.Credentials.AccessKeyId)
+	a.Credential.SetAccessKeyID(stsRes.Credentials.AccessKeyId)
 	a.Credential.SetExpiration(stsRes.Credentials.Expiration)
 	a.Credential.SetProfile(profile)
 	a.Credential.SetSecretAccessKey(stsRes.Credentials.SecretAccessKey)

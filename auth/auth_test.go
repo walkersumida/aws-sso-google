@@ -66,7 +66,6 @@ func TestSAMLAuth(t *testing.T) {
 			}
 		})
 	}
-
 }
 
 func newCredentialMock() *cmock.CredentialerMock {
@@ -80,7 +79,7 @@ func newCredentialMock() *cmock.CredentialerMock {
 		OutputFunc: func() (string, error) {
 			return "", nil
 		},
-		SetAccessKeyIdFunc:     func(s *string) {},
+		SetAccessKeyIDFunc:     func(s *string) {},
 		SetExpirationFunc:      func(t *time.Time) {},
 		SetProfileFunc:         func(s string) {},
 		SetSecretAccessKeyFunc: func(s *string) {},
@@ -127,9 +126,9 @@ func toPointer[T comparable](v T) *T {
 	return &v
 }
 
-func toOutput(accessKeyId, expiration, secretAccessKey, sessionToken string) string {
+func toOutput(accessKeyID, expiration, secretAccessKey, sessionToken string) string {
 	type output struct {
-		AccessKeyId     string `json:"AccessKeyId"`
+		AccessKeyID     string `json:"AccessKeyId"`
 		Expiration      string `json:"Expiration"`
 		SecretAccessKey string `json:"SecretAccessKey"`
 		SessionToken    string `json:"SessionToken"`
@@ -137,7 +136,7 @@ func toOutput(accessKeyId, expiration, secretAccessKey, sessionToken string) str
 	}
 
 	o := output{
-		AccessKeyId:     accessKeyId,
+		AccessKeyID:     accessKeyID,
 		Expiration:      expiration,
 		SecretAccessKey: secretAccessKey,
 		SessionToken:    sessionToken,
