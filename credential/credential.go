@@ -11,7 +11,7 @@ import (
 )
 
 type Credentialer interface {
-	SetAccessKeyId(*string)
+	SetAccessKeyID(*string)
 	SetExpiration(*time.Time)
 	SetProfile(string)
 	SetSecretAccessKey(*string)
@@ -23,7 +23,7 @@ type Credentialer interface {
 }
 
 type Credential struct {
-	AccessKeyId     *string
+	AccessKeyID     *string
 	Expiration      *time.Time
 	Profile         string
 	SecretAccessKey *string
@@ -38,8 +38,8 @@ func New(profile string) *Credential {
 	}
 }
 
-func (c *Credential) SetAccessKeyId(accessKeyId *string) {
-	c.AccessKeyId = accessKeyId
+func (c *Credential) SetAccessKeyID(accessKeyID *string) {
+	c.AccessKeyID = accessKeyID
 }
 
 func (c *Credential) SetExpiration(expiration *time.Time) {
@@ -88,7 +88,7 @@ func (c *Credential) Load() error {
 		return err
 	}
 
-	c.SetAccessKeyId(ptrString(section.Key("aws_access_key_id").Value()))
+	c.SetAccessKeyID(ptrString(section.Key("aws_access_key_id").Value()))
 	c.SetSecretAccessKey(ptrString(section.Key("aws_secret_access_key").Value()))
 	c.SetSessionToken(ptrString(section.Key("aws_session_token").Value()))
 
@@ -131,7 +131,7 @@ func (c *Credential) Save() error {
 		return err
 	}
 
-	cfg.Section(c.Profile).Key("aws_access_key_id").SetValue(*c.AccessKeyId)
+	cfg.Section(c.Profile).Key("aws_access_key_id").SetValue(*c.AccessKeyID)
 	cfg.Section(c.Profile).Key("aws_secret_access_key").SetValue(*c.SecretAccessKey)
 	cfg.Section(c.Profile).Key("aws_session_token").SetValue(*c.SessionToken)
 	cfg.Section(c.Profile).Key("aws_session_expiration").SetValue(c.Expiration.Format(time.RFC3339))
@@ -151,7 +151,7 @@ func (c *Credential) Output() (string, error) {
 	}
 
 	type output struct {
-		AccessKeyId     string `json:"AccessKeyId"`
+		AccessKeyID     string `json:"AccessKeyId"`
 		Expiration      string `json:"Expiration"`
 		SecretAccessKey string `json:"SecretAccessKey"`
 		SessionToken    string `json:"SessionToken"`
@@ -159,7 +159,7 @@ func (c *Credential) Output() (string, error) {
 	}
 
 	o := output{
-		AccessKeyId:     *c.AccessKeyId,
+		AccessKeyID:     *c.AccessKeyID,
 		Expiration:      c.Expiration.Format(time.RFC3339),
 		SecretAccessKey: *c.SecretAccessKey,
 		SessionToken:    *c.SessionToken,
@@ -179,7 +179,7 @@ func ptrString(s string) *string {
 }
 
 func (c *Credential) validate() error {
-	if c.AccessKeyId == nil {
+	if c.AccessKeyID == nil {
 		return errors.New("access key id must be set")
 	}
 

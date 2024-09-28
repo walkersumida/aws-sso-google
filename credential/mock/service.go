@@ -31,8 +31,8 @@ var _ credential.Credentialer = &CredentialerMock{}
 //			SaveFunc: func() error {
 //				panic("mock out the Save method")
 //			},
-//			SetAccessKeyIdFunc: func(s *string)  {
-//				panic("mock out the SetAccessKeyId method")
+//			SetAccessKeyIDFunc: func(s *string)  {
+//				panic("mock out the SetAccessKeyID method")
 //			},
 //			SetExpirationFunc: func(timeMoqParam *time.Time)  {
 //				panic("mock out the SetExpiration method")
@@ -65,8 +65,8 @@ type CredentialerMock struct {
 	// SaveFunc mocks the Save method.
 	SaveFunc func() error
 
-	// SetAccessKeyIdFunc mocks the SetAccessKeyId method.
-	SetAccessKeyIdFunc func(s *string)
+	// SetAccessKeyIDFunc mocks the SetAccessKeyID method.
+	SetAccessKeyIDFunc func(s *string)
 
 	// SetExpirationFunc mocks the SetExpiration method.
 	SetExpirationFunc func(timeMoqParam *time.Time)
@@ -94,8 +94,8 @@ type CredentialerMock struct {
 		// Save holds details about calls to the Save method.
 		Save []struct {
 		}
-		// SetAccessKeyId holds details about calls to the SetAccessKeyId method.
-		SetAccessKeyId []struct {
+		// SetAccessKeyID holds details about calls to the SetAccessKeyID method.
+		SetAccessKeyID []struct {
 			// S is the s argument value.
 			S *string
 		}
@@ -124,7 +124,7 @@ type CredentialerMock struct {
 	lockLoad               sync.RWMutex
 	lockOutput             sync.RWMutex
 	lockSave               sync.RWMutex
-	lockSetAccessKeyId     sync.RWMutex
+	lockSetAccessKeyID     sync.RWMutex
 	lockSetExpiration      sync.RWMutex
 	lockSetProfile         sync.RWMutex
 	lockSetSecretAccessKey sync.RWMutex
@@ -239,35 +239,35 @@ func (mock *CredentialerMock) SaveCalls() []struct {
 	return calls
 }
 
-// SetAccessKeyId calls SetAccessKeyIdFunc.
-func (mock *CredentialerMock) SetAccessKeyId(s *string) {
-	if mock.SetAccessKeyIdFunc == nil {
-		panic("CredentialerMock.SetAccessKeyIdFunc: method is nil but Credentialer.SetAccessKeyId was just called")
+// SetAccessKeyID calls SetAccessKeyIDFunc.
+func (mock *CredentialerMock) SetAccessKeyID(s *string) {
+	if mock.SetAccessKeyIDFunc == nil {
+		panic("CredentialerMock.SetAccessKeyIDFunc: method is nil but Credentialer.SetAccessKeyID was just called")
 	}
 	callInfo := struct {
 		S *string
 	}{
 		S: s,
 	}
-	mock.lockSetAccessKeyId.Lock()
-	mock.calls.SetAccessKeyId = append(mock.calls.SetAccessKeyId, callInfo)
-	mock.lockSetAccessKeyId.Unlock()
-	mock.SetAccessKeyIdFunc(s)
+	mock.lockSetAccessKeyID.Lock()
+	mock.calls.SetAccessKeyID = append(mock.calls.SetAccessKeyID, callInfo)
+	mock.lockSetAccessKeyID.Unlock()
+	mock.SetAccessKeyIDFunc(s)
 }
 
-// SetAccessKeyIdCalls gets all the calls that were made to SetAccessKeyId.
+// SetAccessKeyIDCalls gets all the calls that were made to SetAccessKeyID.
 // Check the length with:
 //
-//	len(mockedCredentialer.SetAccessKeyIdCalls())
-func (mock *CredentialerMock) SetAccessKeyIdCalls() []struct {
+//	len(mockedCredentialer.SetAccessKeyIDCalls())
+func (mock *CredentialerMock) SetAccessKeyIDCalls() []struct {
 	S *string
 } {
 	var calls []struct {
 		S *string
 	}
-	mock.lockSetAccessKeyId.RLock()
-	calls = mock.calls.SetAccessKeyId
-	mock.lockSetAccessKeyId.RUnlock()
+	mock.lockSetAccessKeyID.RLock()
+	calls = mock.calls.SetAccessKeyID
+	mock.lockSetAccessKeyID.RUnlock()
 	return calls
 }
 

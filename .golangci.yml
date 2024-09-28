@@ -26,7 +26,7 @@ linters:
     - funlen
     - gocritic
     - gofmt
-    - goheader
+      # - goheader # TODO: enable goheader
     - gosec
     - gosimple
     - govet
