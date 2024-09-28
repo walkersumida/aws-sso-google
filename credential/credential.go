@@ -10,6 +10,18 @@ import (
 	"gopkg.in/ini.v1"
 )
 
+type Credentialer interface {
+	SetAccessKeyId(*string)
+	SetExpiration(*time.Time)
+	SetProfile(string)
+	SetSecretAccessKey(*string)
+	SetSessionToken(*string)
+	Load() error
+	IsExpired() bool
+	Save() error
+	Output() (string, error)
+}
+
 type Credential struct {
 	AccessKeyId     *string
 	Expiration      *time.Time
@@ -17,6 +29,8 @@ type Credential struct {
 	SecretAccessKey *string
 	SessionToken    *string
 }
+
+var _ Credentialer = &Credential{}
 
 func New(profile string) *Credential {
 	return &Credential{

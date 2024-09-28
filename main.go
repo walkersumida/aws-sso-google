@@ -5,53 +5,11 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
+	"github.com/walkersumida/aws-sso-google/auth"
 	"github.com/walkersumida/aws-sso-google/credential"
 	"github.com/walkersumida/aws-sso-google/saml"
 	"github.com/walkersumida/aws-sso-google/sts"
 )
-
-func samlAuth(awsRoleArn, profile, idpID, spID, username string, clean bool) (string, error) {
-	cred := credential.New(profile)
-	if err := cred.Load(); err != nil {
-		return "", err
-	}
-	if !cred.IsExpired() {
-		out, err := cred.Output()
-		if err != nil {
-			return "", err
-		}
-
-		return out, nil
-	}
-
-	s := saml.New(awsRoleArn, idpID, spID, username, clean)
-	samlRes, err := s.Signin()
-	if err != nil {
-		return "", err
-	}
-
-	sts := sts.New(samlRes.PrincipalArn, profile, awsRoleArn, samlRes.SAMLResponse)
-	stsRes, err := sts.AssumeRoleWithSAML()
-	if err != nil {
-		return "", err
-	}
-
-	cred.SetAccessKeyId(stsRes.Credentials.AccessKeyId)
-	cred.SetExpiration(stsRes.Credentials.Expiration)
-	cred.SetProfile(profile)
-	cred.SetSecretAccessKey(stsRes.Credentials.SecretAccessKey)
-	cred.SetSessionToken(stsRes.Credentials.SessionToken)
-	if err := cred.Save(); err != nil {
-		return "", err
-	}
-
-	out, err := cred.Output()
-	if err != nil {
-		return "", err
-	}
-
-	return out, nil
-}
 
 func run() error {
 	var clean bool
@@ -61,7 +19,11 @@ func run() error {
 		Version: "0.1.0",
 		Short:   "Acquire AWS STS credentials via Google Workspace SAML in a browser",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			cred, err := samlAuth(awsRoleArn, profile, idpID, spID, username, clean)
+			c := credential.New(profile)
+			saml := saml.New(awsRoleArn, idpID, spID, username, clean)
+			sts := sts.New()
+			a := auth.New(c, saml, sts)
+			cred, err := a.SAMLAuth(awsRoleArn, profile, idpID, spID, username, clean)
 			if err != nil {
 				return err
 			}

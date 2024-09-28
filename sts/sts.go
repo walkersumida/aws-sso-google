@@ -8,6 +8,14 @@ import (
 	sdksts "github.com/aws/aws-sdk-go-v2/service/sts"
 )
 
+type STSer interface {
+	SetPrincipalArn(string)
+	SetProfile(string)
+	SetRoleArn(string)
+	SetSAMLAssertion(string)
+	AssumeRoleWithSAML() (*Response, error)
+}
+
 type STS struct {
 	PrincipalArn  string
 	Profile       string
@@ -15,17 +23,30 @@ type STS struct {
 	SAMLAssertion string
 }
 
+var _ STSer = &STS{}
+
 type Response struct {
 	sdksts.AssumeRoleWithSAMLOutput
 }
 
-func New(principalArn, profile, roleArn, samlAssertion string) *STS {
-	return &STS{
-		PrincipalArn:  principalArn,
-		Profile:       profile,
-		RoleArn:       roleArn,
-		SAMLAssertion: samlAssertion,
-	}
+func New() *STS {
+	return &STS{}
+}
+
+func (s *STS) SetPrincipalArn(principalArn string) {
+	s.PrincipalArn = principalArn
+}
+
+func (s *STS) SetProfile(profile string) {
+	s.Profile = profile
+}
+
+func (s *STS) SetRoleArn(roleArn string) {
+	s.RoleArn = roleArn
+}
+
+func (s *STS) SetSAMLAssertion(samlAssertion string) {
+	s.SAMLAssertion = samlAssertion
 }
 
 func (s *STS) AssumeRoleWithSAML() (*Response, error) {

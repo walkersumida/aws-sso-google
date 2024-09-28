@@ -5,6 +5,7 @@ go 1.23.1
 require (
 	github.com/aws/aws-sdk-go-v2/config v1.27.33
 	github.com/aws/aws-sdk-go-v2/service/sts v1.30.7
+	github.com/google/go-cmp v0.6.0
 	github.com/playwright-community/playwright-go v0.4400.1
 	github.com/spf13/cobra v1.8.0
 	gopkg.in/ini.v1 v1.67.0
