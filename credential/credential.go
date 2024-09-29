@@ -13,7 +13,7 @@ import (
 type Credentialer interface {
 	SetAccessKeyID(*string)
 	SetExpiration(*time.Time)
-	SetProfile(string)
+	SetAwsProfile(string)
 	SetSecretAccessKey(*string)
 	SetSessionToken(*string)
 	Load() error
@@ -25,16 +25,16 @@ type Credentialer interface {
 type Credential struct {
 	AccessKeyID     *string
 	Expiration      *time.Time
-	Profile         string
+	AwsProfile      string
 	SecretAccessKey *string
 	SessionToken    *string
 }
 
 var _ Credentialer = &Credential{}
 
-func New(profile string) *Credential {
+func New(awsProfile string) *Credential {
 	return &Credential{
-		Profile: profile,
+		AwsProfile: awsProfile,
 	}
 }
 
@@ -46,8 +46,8 @@ func (c *Credential) SetExpiration(expiration *time.Time) {
 	c.Expiration = expiration
 }
 
-func (c *Credential) SetProfile(profile string) {
-	c.Profile = profile
+func (c *Credential) SetAwsProfile(awsProfile string) {
+	c.AwsProfile = awsProfile
 }
 
 func (c *Credential) SetSecretAccessKey(secretAccessKey *string) {
@@ -83,7 +83,7 @@ func (c *Credential) Load() error {
 		return err
 	}
 
-	section, err := cfg.GetSection(c.Profile)
+	section, err := cfg.GetSection(c.AwsProfile)
 	if err != nil {
 		return err
 	}
@@ -131,10 +131,10 @@ func (c *Credential) Save() error {
 		return err
 	}
 
-	cfg.Section(c.Profile).Key("aws_access_key_id").SetValue(*c.AccessKeyID)
-	cfg.Section(c.Profile).Key("aws_secret_access_key").SetValue(*c.SecretAccessKey)
-	cfg.Section(c.Profile).Key("aws_session_token").SetValue(*c.SessionToken)
-	cfg.Section(c.Profile).Key("aws_session_expiration").SetValue(c.Expiration.Format(time.RFC3339))
+	cfg.Section(c.AwsProfile).Key("aws_access_key_id").SetValue(*c.AccessKeyID)
+	cfg.Section(c.AwsProfile).Key("aws_secret_access_key").SetValue(*c.SecretAccessKey)
+	cfg.Section(c.AwsProfile).Key("aws_session_token").SetValue(*c.SessionToken)
+	cfg.Section(c.AwsProfile).Key("aws_session_expiration").SetValue(c.Expiration.Format(time.RFC3339))
 
 	err = cfg.SaveTo(p)
 	if err != nil {

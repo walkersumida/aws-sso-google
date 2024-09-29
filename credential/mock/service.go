@@ -34,11 +34,11 @@ var _ credential.Credentialer = &CredentialerMock{}
 //			SetAccessKeyIDFunc: func(s *string)  {
 //				panic("mock out the SetAccessKeyID method")
 //			},
+//			SetAwsProfileFunc: func(s string)  {
+//				panic("mock out the SetAwsProfile method")
+//			},
 //			SetExpirationFunc: func(timeMoqParam *time.Time)  {
 //				panic("mock out the SetExpiration method")
-//			},
-//			SetProfileFunc: func(s string)  {
-//				panic("mock out the SetProfile method")
 //			},
 //			SetSecretAccessKeyFunc: func(s *string)  {
 //				panic("mock out the SetSecretAccessKey method")
@@ -68,11 +68,11 @@ type CredentialerMock struct {
 	// SetAccessKeyIDFunc mocks the SetAccessKeyID method.
 	SetAccessKeyIDFunc func(s *string)
 
+	// SetAwsProfileFunc mocks the SetAwsProfile method.
+	SetAwsProfileFunc func(s string)
+
 	// SetExpirationFunc mocks the SetExpiration method.
 	SetExpirationFunc func(timeMoqParam *time.Time)
-
-	// SetProfileFunc mocks the SetProfile method.
-	SetProfileFunc func(s string)
 
 	// SetSecretAccessKeyFunc mocks the SetSecretAccessKey method.
 	SetSecretAccessKeyFunc func(s *string)
@@ -99,15 +99,15 @@ type CredentialerMock struct {
 			// S is the s argument value.
 			S *string
 		}
+		// SetAwsProfile holds details about calls to the SetAwsProfile method.
+		SetAwsProfile []struct {
+			// S is the s argument value.
+			S string
+		}
 		// SetExpiration holds details about calls to the SetExpiration method.
 		SetExpiration []struct {
 			// TimeMoqParam is the timeMoqParam argument value.
 			TimeMoqParam *time.Time
-		}
-		// SetProfile holds details about calls to the SetProfile method.
-		SetProfile []struct {
-			// S is the s argument value.
-			S string
 		}
 		// SetSecretAccessKey holds details about calls to the SetSecretAccessKey method.
 		SetSecretAccessKey []struct {
@@ -125,8 +125,8 @@ type CredentialerMock struct {
 	lockOutput             sync.RWMutex
 	lockSave               sync.RWMutex
 	lockSetAccessKeyID     sync.RWMutex
+	lockSetAwsProfile      sync.RWMutex
 	lockSetExpiration      sync.RWMutex
-	lockSetProfile         sync.RWMutex
 	lockSetSecretAccessKey sync.RWMutex
 	lockSetSessionToken    sync.RWMutex
 }
@@ -271,6 +271,38 @@ func (mock *CredentialerMock) SetAccessKeyIDCalls() []struct {
 	return calls
 }
 
+// SetAwsProfile calls SetAwsProfileFunc.
+func (mock *CredentialerMock) SetAwsProfile(s string) {
+	if mock.SetAwsProfileFunc == nil {
+		panic("CredentialerMock.SetAwsProfileFunc: method is nil but Credentialer.SetAwsProfile was just called")
+	}
+	callInfo := struct {
+		S string
+	}{
+		S: s,
+	}
+	mock.lockSetAwsProfile.Lock()
+	mock.calls.SetAwsProfile = append(mock.calls.SetAwsProfile, callInfo)
+	mock.lockSetAwsProfile.Unlock()
+	mock.SetAwsProfileFunc(s)
+}
+
+// SetAwsProfileCalls gets all the calls that were made to SetAwsProfile.
+// Check the length with:
+//
+//	len(mockedCredentialer.SetAwsProfileCalls())
+func (mock *CredentialerMock) SetAwsProfileCalls() []struct {
+	S string
+} {
+	var calls []struct {
+		S string
+	}
+	mock.lockSetAwsProfile.RLock()
+	calls = mock.calls.SetAwsProfile
+	mock.lockSetAwsProfile.RUnlock()
+	return calls
+}
+
 // SetExpiration calls SetExpirationFunc.
 func (mock *CredentialerMock) SetExpiration(timeMoqParam *time.Time) {
 	if mock.SetExpirationFunc == nil {
@@ -300,38 +332,6 @@ func (mock *CredentialerMock) SetExpirationCalls() []struct {
 	mock.lockSetExpiration.RLock()
 	calls = mock.calls.SetExpiration
 	mock.lockSetExpiration.RUnlock()
-	return calls
-}
-
-// SetProfile calls SetProfileFunc.
-func (mock *CredentialerMock) SetProfile(s string) {
-	if mock.SetProfileFunc == nil {
-		panic("CredentialerMock.SetProfileFunc: method is nil but Credentialer.SetProfile was just called")
-	}
-	callInfo := struct {
-		S string
-	}{
-		S: s,
-	}
-	mock.lockSetProfile.Lock()
-	mock.calls.SetProfile = append(mock.calls.SetProfile, callInfo)
-	mock.lockSetProfile.Unlock()
-	mock.SetProfileFunc(s)
-}
-
-// SetProfileCalls gets all the calls that were made to SetProfile.
-// Check the length with:
-//
-//	len(mockedCredentialer.SetProfileCalls())
-func (mock *CredentialerMock) SetProfileCalls() []struct {
-	S string
-} {
-	var calls []struct {
-		S string
-	}
-	mock.lockSetProfile.RLock()
-	calls = mock.calls.SetProfile
-	mock.lockSetProfile.RUnlock()
 	return calls
 }
 

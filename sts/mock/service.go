@@ -21,14 +21,14 @@ var _ sts.STSer = &STSerMock{}
 //			AssumeRoleWithSAMLFunc: func() (*sts.Response, error) {
 //				panic("mock out the AssumeRoleWithSAML method")
 //			},
+//			SetAwsProfileFunc: func(s string)  {
+//				panic("mock out the SetAwsProfile method")
+//			},
+//			SetAwsRoleArnFunc: func(s string)  {
+//				panic("mock out the SetAwsRoleArn method")
+//			},
 //			SetPrincipalArnFunc: func(s string)  {
 //				panic("mock out the SetPrincipalArn method")
-//			},
-//			SetProfileFunc: func(s string)  {
-//				panic("mock out the SetProfile method")
-//			},
-//			SetRoleArnFunc: func(s string)  {
-//				panic("mock out the SetRoleArn method")
 //			},
 //			SetSAMLAssertionFunc: func(s string)  {
 //				panic("mock out the SetSAMLAssertion method")
@@ -43,14 +43,14 @@ type STSerMock struct {
 	// AssumeRoleWithSAMLFunc mocks the AssumeRoleWithSAML method.
 	AssumeRoleWithSAMLFunc func() (*sts.Response, error)
 
+	// SetAwsProfileFunc mocks the SetAwsProfile method.
+	SetAwsProfileFunc func(s string)
+
+	// SetAwsRoleArnFunc mocks the SetAwsRoleArn method.
+	SetAwsRoleArnFunc func(s string)
+
 	// SetPrincipalArnFunc mocks the SetPrincipalArn method.
 	SetPrincipalArnFunc func(s string)
-
-	// SetProfileFunc mocks the SetProfile method.
-	SetProfileFunc func(s string)
-
-	// SetRoleArnFunc mocks the SetRoleArn method.
-	SetRoleArnFunc func(s string)
 
 	// SetSAMLAssertionFunc mocks the SetSAMLAssertion method.
 	SetSAMLAssertionFunc func(s string)
@@ -60,18 +60,18 @@ type STSerMock struct {
 		// AssumeRoleWithSAML holds details about calls to the AssumeRoleWithSAML method.
 		AssumeRoleWithSAML []struct {
 		}
+		// SetAwsProfile holds details about calls to the SetAwsProfile method.
+		SetAwsProfile []struct {
+			// S is the s argument value.
+			S string
+		}
+		// SetAwsRoleArn holds details about calls to the SetAwsRoleArn method.
+		SetAwsRoleArn []struct {
+			// S is the s argument value.
+			S string
+		}
 		// SetPrincipalArn holds details about calls to the SetPrincipalArn method.
 		SetPrincipalArn []struct {
-			// S is the s argument value.
-			S string
-		}
-		// SetProfile holds details about calls to the SetProfile method.
-		SetProfile []struct {
-			// S is the s argument value.
-			S string
-		}
-		// SetRoleArn holds details about calls to the SetRoleArn method.
-		SetRoleArn []struct {
 			// S is the s argument value.
 			S string
 		}
@@ -82,9 +82,9 @@ type STSerMock struct {
 		}
 	}
 	lockAssumeRoleWithSAML sync.RWMutex
+	lockSetAwsProfile      sync.RWMutex
+	lockSetAwsRoleArn      sync.RWMutex
 	lockSetPrincipalArn    sync.RWMutex
-	lockSetProfile         sync.RWMutex
-	lockSetRoleArn         sync.RWMutex
 	lockSetSAMLAssertion   sync.RWMutex
 }
 
@@ -112,6 +112,70 @@ func (mock *STSerMock) AssumeRoleWithSAMLCalls() []struct {
 	mock.lockAssumeRoleWithSAML.RLock()
 	calls = mock.calls.AssumeRoleWithSAML
 	mock.lockAssumeRoleWithSAML.RUnlock()
+	return calls
+}
+
+// SetAwsProfile calls SetAwsProfileFunc.
+func (mock *STSerMock) SetAwsProfile(s string) {
+	if mock.SetAwsProfileFunc == nil {
+		panic("STSerMock.SetAwsProfileFunc: method is nil but STSer.SetAwsProfile was just called")
+	}
+	callInfo := struct {
+		S string
+	}{
+		S: s,
+	}
+	mock.lockSetAwsProfile.Lock()
+	mock.calls.SetAwsProfile = append(mock.calls.SetAwsProfile, callInfo)
+	mock.lockSetAwsProfile.Unlock()
+	mock.SetAwsProfileFunc(s)
+}
+
+// SetAwsProfileCalls gets all the calls that were made to SetAwsProfile.
+// Check the length with:
+//
+//	len(mockedSTSer.SetAwsProfileCalls())
+func (mock *STSerMock) SetAwsProfileCalls() []struct {
+	S string
+} {
+	var calls []struct {
+		S string
+	}
+	mock.lockSetAwsProfile.RLock()
+	calls = mock.calls.SetAwsProfile
+	mock.lockSetAwsProfile.RUnlock()
+	return calls
+}
+
+// SetAwsRoleArn calls SetAwsRoleArnFunc.
+func (mock *STSerMock) SetAwsRoleArn(s string) {
+	if mock.SetAwsRoleArnFunc == nil {
+		panic("STSerMock.SetAwsRoleArnFunc: method is nil but STSer.SetAwsRoleArn was just called")
+	}
+	callInfo := struct {
+		S string
+	}{
+		S: s,
+	}
+	mock.lockSetAwsRoleArn.Lock()
+	mock.calls.SetAwsRoleArn = append(mock.calls.SetAwsRoleArn, callInfo)
+	mock.lockSetAwsRoleArn.Unlock()
+	mock.SetAwsRoleArnFunc(s)
+}
+
+// SetAwsRoleArnCalls gets all the calls that were made to SetAwsRoleArn.
+// Check the length with:
+//
+//	len(mockedSTSer.SetAwsRoleArnCalls())
+func (mock *STSerMock) SetAwsRoleArnCalls() []struct {
+	S string
+} {
+	var calls []struct {
+		S string
+	}
+	mock.lockSetAwsRoleArn.RLock()
+	calls = mock.calls.SetAwsRoleArn
+	mock.lockSetAwsRoleArn.RUnlock()
 	return calls
 }
 
@@ -144,70 +208,6 @@ func (mock *STSerMock) SetPrincipalArnCalls() []struct {
 	mock.lockSetPrincipalArn.RLock()
 	calls = mock.calls.SetPrincipalArn
 	mock.lockSetPrincipalArn.RUnlock()
-	return calls
-}
-
-// SetProfile calls SetProfileFunc.
-func (mock *STSerMock) SetProfile(s string) {
-	if mock.SetProfileFunc == nil {
-		panic("STSerMock.SetProfileFunc: method is nil but STSer.SetProfile was just called")
-	}
-	callInfo := struct {
-		S string
-	}{
-		S: s,
-	}
-	mock.lockSetProfile.Lock()
-	mock.calls.SetProfile = append(mock.calls.SetProfile, callInfo)
-	mock.lockSetProfile.Unlock()
-	mock.SetProfileFunc(s)
-}
-
-// SetProfileCalls gets all the calls that were made to SetProfile.
-// Check the length with:
-//
-//	len(mockedSTSer.SetProfileCalls())
-func (mock *STSerMock) SetProfileCalls() []struct {
-	S string
-} {
-	var calls []struct {
-		S string
-	}
-	mock.lockSetProfile.RLock()
-	calls = mock.calls.SetProfile
-	mock.lockSetProfile.RUnlock()
-	return calls
-}
-
-// SetRoleArn calls SetRoleArnFunc.
-func (mock *STSerMock) SetRoleArn(s string) {
-	if mock.SetRoleArnFunc == nil {
-		panic("STSerMock.SetRoleArnFunc: method is nil but STSer.SetRoleArn was just called")
-	}
-	callInfo := struct {
-		S string
-	}{
-		S: s,
-	}
-	mock.lockSetRoleArn.Lock()
-	mock.calls.SetRoleArn = append(mock.calls.SetRoleArn, callInfo)
-	mock.lockSetRoleArn.Unlock()
-	mock.SetRoleArnFunc(s)
-}
-
-// SetRoleArnCalls gets all the calls that were made to SetRoleArn.
-// Check the length with:
-//
-//	len(mockedSTSer.SetRoleArnCalls())
-func (mock *STSerMock) SetRoleArnCalls() []struct {
-	S string
-} {
-	var calls []struct {
-		S string
-	}
-	mock.lockSetRoleArn.RLock()
-	calls = mock.calls.SetRoleArn
-	mock.lockSetRoleArn.RUnlock()
 	return calls
 }
 

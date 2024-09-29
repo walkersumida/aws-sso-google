@@ -10,16 +10,16 @@ import (
 
 type STSer interface {
 	SetPrincipalArn(string)
-	SetProfile(string)
-	SetRoleArn(string)
+	SetAwsProfile(string)
+	SetAwsRoleArn(string)
 	SetSAMLAssertion(string)
 	AssumeRoleWithSAML() (*Response, error)
 }
 
 type STS struct {
 	PrincipalArn  string
-	Profile       string
-	RoleArn       string
+	AwsProfile    string
+	AwsRoleArn    string
 	SAMLAssertion string
 }
 
@@ -37,12 +37,12 @@ func (s *STS) SetPrincipalArn(principalArn string) {
 	s.PrincipalArn = principalArn
 }
 
-func (s *STS) SetProfile(profile string) {
-	s.Profile = profile
+func (s *STS) SetAwsProfile(awsProfile string) {
+	s.AwsProfile = awsProfile
 }
 
-func (s *STS) SetRoleArn(roleArn string) {
-	s.RoleArn = roleArn
+func (s *STS) SetAwsRoleArn(awsRoleArn string) {
+	s.AwsRoleArn = awsRoleArn
 }
 
 func (s *STS) SetSAMLAssertion(samlAssertion string) {
@@ -53,7 +53,7 @@ func (s *STS) AssumeRoleWithSAML() (*Response, error) {
 	ctx := context.Background()
 	cfg, err := config.LoadDefaultConfig(
 		ctx,
-		config.WithSharedConfigProfile(s.Profile),
+		config.WithSharedConfigProfile(s.AwsProfile),
 	)
 	if err != nil {
 		return nil, fmt.Errorf("could not load default config: %w", err)
@@ -63,7 +63,7 @@ func (s *STS) AssumeRoleWithSAML() (*Response, error) {
 
 	input := &sdksts.AssumeRoleWithSAMLInput{
 		PrincipalArn:  &s.PrincipalArn,
-		RoleArn:       &s.RoleArn,
+		RoleArn:       &s.AwsRoleArn,
 		SAMLAssertion: &s.SAMLAssertion,
 	}
 

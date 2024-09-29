@@ -20,7 +20,7 @@ func New(cred credential.Credentialer, saml saml.SAMLer, sts sts.STSer) *Auth {
 	}
 }
 
-func (a *Auth) SAMLAuth(awsRoleArn, profile, idpID, spID, username string, clean bool) (string, error) {
+func (a *Auth) SAMLAuth(awsRoleArn, awsProfile, idpID, spID, username string, clean bool) (string, error) {
 	if err := a.Credential.Load(); err != nil {
 		return "", err
 	}
@@ -39,8 +39,8 @@ func (a *Auth) SAMLAuth(awsRoleArn, profile, idpID, spID, username string, clean
 	}
 
 	a.STS.SetPrincipalArn(samlRes.PrincipalArn)
-	a.STS.SetProfile(profile)
-	a.STS.SetRoleArn(awsRoleArn)
+	a.STS.SetAwsProfile(awsProfile)
+	a.STS.SetAwsRoleArn(awsRoleArn)
 	a.STS.SetSAMLAssertion(samlRes.SAMLResponse)
 	stsRes, err := a.STS.AssumeRoleWithSAML()
 	if err != nil {
@@ -49,7 +49,7 @@ func (a *Auth) SAMLAuth(awsRoleArn, profile, idpID, spID, username string, clean
 
 	a.Credential.SetAccessKeyID(stsRes.Credentials.AccessKeyId)
 	a.Credential.SetExpiration(stsRes.Credentials.Expiration)
-	a.Credential.SetProfile(profile)
+	a.Credential.SetAwsProfile(awsProfile)
 	a.Credential.SetSecretAccessKey(stsRes.Credentials.SecretAccessKey)
 	a.Credential.SetSessionToken(stsRes.Credentials.SessionToken)
 	if err := a.Credential.Save(); err != nil {

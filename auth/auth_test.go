@@ -81,7 +81,7 @@ func newCredentialMock() *cmock.CredentialerMock {
 		},
 		SetAccessKeyIDFunc:     func(s *string) {},
 		SetExpirationFunc:      func(t *time.Time) {},
-		SetProfileFunc:         func(s string) {},
+		SetAwsProfileFunc:      func(s string) {},
 		SetSecretAccessKeyFunc: func(s *string) {},
 		SetSessionTokenFunc:    func(s *string) {},
 		SaveFunc: func() error {
@@ -104,8 +104,8 @@ func newSAMLMock() *smock.SAMLerMock {
 func newSTSMock() *stsmock.STSerMock {
 	return &stsmock.STSerMock{
 		SetPrincipalArnFunc:  func(s string) {},
-		SetProfileFunc:       func(s string) {},
-		SetRoleArnFunc:       func(s string) {},
+		SetAwsProfileFunc:    func(s string) {},
+		SetAwsRoleArnFunc:    func(s string) {},
 		SetSAMLAssertionFunc: func(s string) {},
 		AssumeRoleWithSAMLFunc: func() (*sts.Response, error) {
 			return &sts.Response{
