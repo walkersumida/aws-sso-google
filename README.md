@@ -46,6 +46,7 @@ Flags:
   -p, --aws-profile string    AWS profile
   -r, --aws-role-arn string   AWS role arn
   -c, --clean                 Clean browser session
+  -d, --duration int32        Credential duration in seconds (default 3600)
   -h, --help                  help for aws-sso-google
   -i, --idp-id string         Google SSO IdP identifier
   -s, --sp-id string          Google SSO SP identifier
