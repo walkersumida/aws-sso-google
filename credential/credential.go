@@ -13,7 +13,6 @@ import (
 type Credentialer interface {
 	SetAccessKeyID(*string)
 	SetExpiration(*time.Time)
-	SetAwsProfile(string)
 	SetSecretAccessKey(*string)
 	SetSessionToken(*string)
 	Load() error
@@ -44,10 +43,6 @@ func (c *Credential) SetAccessKeyID(accessKeyID *string) {
 
 func (c *Credential) SetExpiration(expiration *time.Time) {
 	c.Expiration = expiration
-}
-
-func (c *Credential) SetAwsProfile(awsProfile string) {
-	c.AwsProfile = awsProfile
 }
 
 func (c *Credential) SetSecretAccessKey(secretAccessKey *string) {

@@ -52,7 +52,7 @@ func TestSAMLAuth(t *testing.T) {
 
 			a := auth.New(cred, saml, sts)
 
-			got, err := a.SAMLAuth("roleArn", "profile", "idpID", "spID", "username", false)
+			got, err := a.SAMLAuth()
 			if err != nil {
 				t.Errorf("unexpected error: %v", err)
 			}
@@ -81,7 +81,6 @@ func newCredentialMock() *cmock.CredentialerMock {
 		},
 		SetAccessKeyIDFunc:     func(s *string) {},
 		SetExpirationFunc:      func(t *time.Time) {},
-		SetAwsProfileFunc:      func(s string) {},
 		SetSecretAccessKeyFunc: func(s *string) {},
 		SetSessionTokenFunc:    func(s *string) {},
 		SaveFunc: func() error {
@@ -104,8 +103,6 @@ func newSAMLMock() *smock.SAMLerMock {
 func newSTSMock() *stsmock.STSerMock {
 	return &stsmock.STSerMock{
 		SetPrincipalArnFunc:  func(s string) {},
-		SetAwsProfileFunc:    func(s string) {},
-		SetAwsRoleArnFunc:    func(s string) {},
 		SetSAMLAssertionFunc: func(s string) {},
 		AssumeRoleWithSAMLFunc: func() (*sts.Response, error) {
 			return &sts.Response{

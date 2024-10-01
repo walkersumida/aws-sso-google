@@ -43,11 +43,11 @@ Usage:
   aws-sso-google [flags]
 
 Flags:
+  -p, --aws-profile string    AWS profile
   -r, --aws-role-arn string   AWS role arn
   -c, --clean                 Clean browser session
   -h, --help                  help for aws-sso-google
   -i, --idp-id string         Google SSO IdP identifier
-  -p, --profile string        AWS profile
   -s, --sp-id string          Google SSO SP identifier
   -u, --username string       Google Email address
   -v, --version               version for aws-sso-google
