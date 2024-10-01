@@ -21,9 +21,9 @@ func run() error {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c := credential.New(awsProfile)
 			saml := saml.New(awsRoleArn, idpID, spID, username, clean)
-			sts := sts.New()
+			sts := sts.New(awsProfile, awsRoleArn)
 			a := auth.New(c, saml, sts)
-			cred, err := a.SAMLAuth(awsRoleArn, awsProfile, idpID, spID, username, clean)
+			cred, err := a.SAMLAuth()
 			if err != nil {
 				return err
 			}
@@ -41,13 +41,13 @@ func run() error {
 	rootCmd.Flags().StringVarP(&spID, "sp-id", "s", "", "Google SSO SP identifier")
 	rootCmd.Flags().StringVarP(&username, "username", "u", "", "Google Email address")
 
+	if err := rootCmd.MarkFlagRequired("aws-profile"); err != nil {
+		return err
+	}
 	if err := rootCmd.MarkFlagRequired("aws-role-arn"); err != nil {
 		return err
 	}
 	if err := rootCmd.MarkFlagRequired("idp-id"); err != nil {
-		return err
-	}
-	if err := rootCmd.MarkFlagRequired("aws-profile"); err != nil {
 		return err
 	}
 	if err := rootCmd.MarkFlagRequired("sp-id"); err != nil {

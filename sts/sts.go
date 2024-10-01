@@ -10,8 +10,6 @@ import (
 
 type STSer interface {
 	SetPrincipalArn(string)
-	SetAwsProfile(string)
-	SetAwsRoleArn(string)
 	SetSAMLAssertion(string)
 	AssumeRoleWithSAML() (*Response, error)
 }
@@ -29,20 +27,15 @@ type Response struct {
 	sdksts.AssumeRoleWithSAMLOutput
 }
 
-func New() *STS {
-	return &STS{}
+func New(awsProfile, awsRoleArn string) *STS {
+	return &STS{
+		AwsProfile: awsProfile,
+		AwsRoleArn: awsRoleArn,
+	}
 }
 
 func (s *STS) SetPrincipalArn(principalArn string) {
 	s.PrincipalArn = principalArn
-}
-
-func (s *STS) SetAwsProfile(awsProfile string) {
-	s.AwsProfile = awsProfile
-}
-
-func (s *STS) SetAwsRoleArn(awsRoleArn string) {
-	s.AwsRoleArn = awsRoleArn
 }
 
 func (s *STS) SetSAMLAssertion(samlAssertion string) {
