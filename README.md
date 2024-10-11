@@ -35,6 +35,15 @@ ref: [Source credentials with an external process](https://docs.aws.amazon.com/c
 credential_process = aws-sso-google -c -u user@example.com -p example -i XXXXXXXXX -s 888888888888 -r arn:aws:iam::999999999999:role/RoleName
 ```
 
+Then run the `aws` command as usual.
+```bash
+$ aws s3 ls
+```
+
+If the authentication has expired, the browser will start and the Google authentication screen will appear. If the authentication is successful, the result of the aws command will be displayed.
+
+## Help
+
 ```bash
 $ aws-sso-google -h
 Acquire AWS STS credentials via Google Workspace SAML in a browser
