@@ -1,8 +1,9 @@
 <p align="center">
-  <p align="center">![aws-sso-google](https://github.com/walkersumida/aws-sso-google/actions/workflows/ci.yml/badge.svg)</p>
   <p align="center">aws-sso-google</p>
   <p align="center">AWS STS credentials via Google Workspace</p>
 </p>
+
+[![aws-sso-google](https://github.com/walkersumida/aws-sso-google/actions/workflows/ci.yml/badge.svg)](https://github.com/walkersumida/aws-sso-google/actions)
 
 #### Features:
 
