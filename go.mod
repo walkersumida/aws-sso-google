@@ -8,6 +8,7 @@ require (
 	github.com/google/go-cmp v0.6.0
 	github.com/playwright-community/playwright-go v0.4400.1
 	github.com/spf13/cobra v1.8.0
+	golang.org/x/term v0.17.0
 	gopkg.in/ini.v1 v1.67.0
 )
 
@@ -33,5 +34,6 @@ require (
 	golang.org/x/exp v0.0.0-20240506185415-9bf2ced13842 // indirect
 	golang.org/x/mod v0.20.0 // indirect
 	golang.org/x/sync v0.8.0 // indirect
+	golang.org/x/sys v0.23.0 // indirect
 	golang.org/x/tools v0.24.0 // indirect
 )

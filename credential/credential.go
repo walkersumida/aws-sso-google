@@ -3,10 +3,13 @@ package credential
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"os"
+	"syscall"
 	"time"
 
 	"github.com/walkersumida/aws-sso-google/path"
+	"golang.org/x/term"
 	"gopkg.in/ini.v1"
 )
 
@@ -139,6 +142,9 @@ func (c *Credential) Save() error {
 	return nil
 }
 
+// Output returns the credentials in JSON format.
+// The JSON format is output in the JSON format specified in the aws cli.
+// https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-sourcing-external.html
 func (c *Credential) Output() (string, error) {
 	err := c.validate()
 	if err != nil {
@@ -167,6 +173,15 @@ func (c *Credential) Output() (string, error) {
 	}
 
 	return string(b), nil
+}
+
+// Println prints a message to stdout if it is a terminal, otherwise it prints the credentials.
+func Println(credentials string) {
+	if term.IsTerminal(syscall.Stdout) {
+		fmt.Println("Login successful")
+	} else {
+		fmt.Println(credentials)
+	}
 }
 
 func ptrString(s string) *string {

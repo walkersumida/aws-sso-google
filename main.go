@@ -17,7 +17,7 @@ func run() error {
 	var awsRegion, awsRoleArn, idpID, awsProfile, spID, username string
 	var rootCmd = &cobra.Command{
 		Use:     "aws-sso-google",
-		Version: "0.3.0",
+		Version: "0.4.0",
 		Short:   "Acquire AWS STS credentials via Google Workspace SAML in a browser",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c := credential.New(awsProfile)
@@ -29,7 +29,7 @@ func run() error {
 				return err
 			}
 
-			fmt.Println(cred)
+			credential.Println(cred)
 
 			return nil
 		},
