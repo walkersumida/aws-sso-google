@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"os"
-	"syscall"
 	"time"
 
 	"github.com/walkersumida/aws-sso-google/path"
@@ -177,7 +176,7 @@ func (c *Credential) Output() (string, error) {
 
 // Println prints a message to stdout if it is a terminal, otherwise it prints the credentials.
 func Println(credentials string) {
-	if term.IsTerminal(syscall.Stdout) {
+	if term.IsTerminal(int(os.Stdout.Fd())) {
 		fmt.Println("Login successful")
 	} else {
 		fmt.Println(credentials)
