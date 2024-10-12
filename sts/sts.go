@@ -16,6 +16,7 @@ type STSer interface {
 
 type STS struct {
 	AwsProfile    string
+	AwsRegion     string
 	AwsRoleArn    string
 	Duration      int32
 	PrincipalArn  string
@@ -28,9 +29,10 @@ type Response struct {
 	sdksts.AssumeRoleWithSAMLOutput
 }
 
-func New(awsProfile, awsRoleArn string, duration int32) *STS {
+func New(awsProfile, awsRegion, awsRoleArn string, duration int32) *STS {
 	return &STS{
 		AwsProfile: awsProfile,
+		AwsRegion:  awsRegion,
 		AwsRoleArn: awsRoleArn,
 		Duration:   duration,
 	}
@@ -45,10 +47,17 @@ func (s *STS) SetSAMLAssertion(samlAssertion string) {
 }
 
 func (s *STS) AssumeRoleWithSAML() (*Response, error) {
+	opts := []func(*config.LoadOptions) error{
+		config.WithSharedConfigProfile(s.AwsProfile),
+	}
+	if s.AwsRegion != "" {
+		opts = append(opts, config.WithRegion(s.AwsRegion))
+	}
+
 	ctx := context.Background()
 	cfg, err := config.LoadDefaultConfig(
 		ctx,
-		config.WithSharedConfigProfile(s.AwsProfile),
+		opts...,
 	)
 	if err != nil {
 		return nil, fmt.Errorf("could not load default config: %w", err)
