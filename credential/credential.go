@@ -142,6 +142,9 @@ func (c *Credential) Save() error {
 	return nil
 }
 
+// Output returns the credentials in JSON format.
+// The JSON format is output in the JSON format specified in the aws cli.
+// https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-sourcing-external.html
 func (c *Credential) Output() (string, error) {
 	err := c.validate()
 	if err != nil {
