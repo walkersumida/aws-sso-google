@@ -80,10 +80,7 @@ func (c *Credential) Load() error {
 		return err
 	}
 
-	section, err := cfg.GetSection(c.AwsProfile)
-	if err != nil {
-		return err
-	}
+	section := cfg.Section(c.AwsProfile)
 
 	c.SetAccessKeyID(ptrString(section.Key("aws_access_key_id").Value()))
 	c.SetSecretAccessKey(ptrString(section.Key("aws_secret_access_key").Value()))
