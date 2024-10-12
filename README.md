@@ -32,7 +32,7 @@ ref: [Source credentials with an external process](https://docs.aws.amazon.com/c
 
 ```ini
 [profile example]
-credential_process = aws-sso-google -c -u user@example.com -p example -i XXXXXXXXX -s 888888888888 -r arn:aws:iam::999999999999:role/RoleName
+credential_process = aws-sso-google -c -u user@example.com -p example -i XXXXXXXXX -s 888888888888 --aws-region ap-northeast-1 --aws-role-arn arn:aws:iam::999999999999:role/RoleName
 ```
 
 Then run the `aws` command as usual.
@@ -53,6 +53,7 @@ Usage:
 
 Flags:
   -p, --aws-profile string    AWS profile
+  -e, --aws-region string     AWS region
   -r, --aws-role-arn string   AWS role arn
   -c, --clean                 Clean browser session
   -d, --duration int32        Credential duration in seconds (default 3600)
