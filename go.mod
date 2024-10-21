@@ -3,7 +3,7 @@ module github.com/walkersumida/aws-sso-google
 go 1.23.1
 
 require (
-	github.com/aws/aws-sdk-go-v2/config v1.27.43
+	github.com/aws/aws-sdk-go-v2/config v1.28.0
 	github.com/aws/aws-sdk-go-v2/service/sts v1.32.2
 	github.com/google/go-cmp v0.6.0
 	github.com/matryer/moq v0.5.0
