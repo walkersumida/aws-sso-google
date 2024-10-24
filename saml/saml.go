@@ -2,6 +2,7 @@ package saml
 
 import (
 	"encoding/base64"
+	"encoding/xml"
 	"fmt"
 	"net/url"
 	"os"
@@ -29,6 +30,22 @@ var _ SAMLer = &SAML{}
 type Response struct {
 	PrincipalArn string
 	SAMLResponse string
+}
+
+type XMLSAMLResponse struct {
+	Assertion struct {
+		AttributeStatement struct {
+			Attribute []struct {
+				Name           string `xml:"Name,attr"`
+				AttributeValue []struct {
+					Type     string `xml:"type,attr"`
+					Xsd      string `xml:"xsd,attr"`
+					Xsi      string `xml:"xsi,attr"`
+					CharData string `xml:",chardata"`
+				} `xml:"AttributeValue"`
+			} `xml:"Attribute"`
+		} `xml:"AttributeStatement"`
+	} `xml:"Assertion"`
 }
 
 const (
@@ -173,7 +190,16 @@ func (s *SAML) Signin() (*Response, error) {
 		return nil, fmt.Errorf("could not decode SAMLResponse: %w", err)
 	}
 
-	principalArn := findPrincipalArn(string(decodedSAMLRes))
+	xmlSAMLRes := XMLSAMLResponse{}
+	err = xml.Unmarshal(decodedSAMLRes, &xmlSAMLRes)
+	if err != nil {
+		return nil, fmt.Errorf("could not unmarshal SAMLResponse: %w", err)
+	}
+
+	principalArn := findPrincipalArn(s.AwsRoleArn, xmlSAMLRes)
+	if principalArn == "" {
+		return nil, fmt.Errorf("could not find principalArn")
+	}
 
 	return &Response{
 		SAMLResponse: samlResponse,
@@ -185,9 +211,20 @@ func (s *SAML) buildSamlURL() string {
 	return fmt.Sprintf("%s/o/saml2/initsso?idpid=%s&spid=%s&forceauthn=false", GoogleAccountURL, s.IDPID, s.SpID)
 }
 
-func findPrincipalArn(decodedSAMLRes string) string {
-	re := regexp.MustCompile(RegexpPrincipalArn)
-	return re.FindString(decodedSAMLRes)
+func findPrincipalArn(roleArn string, xmlSAMLRes XMLSAMLResponse) string {
+	for _, attr := range xmlSAMLRes.Assertion.AttributeStatement.Attribute {
+		if attr.Name == "https://aws.amazon.com/SAML/Attributes/Role" {
+			for _, attrVal := range attr.AttributeValue {
+				if strings.Contains(attrVal.CharData, roleArn) {
+					re := regexp.MustCompile(RegexpPrincipalArn)
+					principalArn := re.FindString(attrVal.CharData)
+					return principalArn
+				}
+			}
+		}
+	}
+
+	return ""
 }
 
 func findRoleArns(page playwright.Page) ([]string, error) {
