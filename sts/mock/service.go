@@ -21,8 +21,8 @@ var _ sts.STSer = &STSerMock{}
 //			AssumeRoleWithSAMLFunc: func() (*sts.Response, error) {
 //				panic("mock out the AssumeRoleWithSAML method")
 //			},
-//			SetPrincipalArnFunc: func(s string)  {
-//				panic("mock out the SetPrincipalArn method")
+//			SetAwsPrincipalArnFunc: func(s string)  {
+//				panic("mock out the SetAwsPrincipalArn method")
 //			},
 //			SetSAMLAssertionFunc: func(s string)  {
 //				panic("mock out the SetSAMLAssertion method")
@@ -37,8 +37,8 @@ type STSerMock struct {
 	// AssumeRoleWithSAMLFunc mocks the AssumeRoleWithSAML method.
 	AssumeRoleWithSAMLFunc func() (*sts.Response, error)
 
-	// SetPrincipalArnFunc mocks the SetPrincipalArn method.
-	SetPrincipalArnFunc func(s string)
+	// SetAwsPrincipalArnFunc mocks the SetAwsPrincipalArn method.
+	SetAwsPrincipalArnFunc func(s string)
 
 	// SetSAMLAssertionFunc mocks the SetSAMLAssertion method.
 	SetSAMLAssertionFunc func(s string)
@@ -48,8 +48,8 @@ type STSerMock struct {
 		// AssumeRoleWithSAML holds details about calls to the AssumeRoleWithSAML method.
 		AssumeRoleWithSAML []struct {
 		}
-		// SetPrincipalArn holds details about calls to the SetPrincipalArn method.
-		SetPrincipalArn []struct {
+		// SetAwsPrincipalArn holds details about calls to the SetAwsPrincipalArn method.
+		SetAwsPrincipalArn []struct {
 			// S is the s argument value.
 			S string
 		}
@@ -60,7 +60,7 @@ type STSerMock struct {
 		}
 	}
 	lockAssumeRoleWithSAML sync.RWMutex
-	lockSetPrincipalArn    sync.RWMutex
+	lockSetAwsPrincipalArn sync.RWMutex
 	lockSetSAMLAssertion   sync.RWMutex
 }
 
@@ -91,35 +91,35 @@ func (mock *STSerMock) AssumeRoleWithSAMLCalls() []struct {
 	return calls
 }
 
-// SetPrincipalArn calls SetPrincipalArnFunc.
-func (mock *STSerMock) SetPrincipalArn(s string) {
-	if mock.SetPrincipalArnFunc == nil {
-		panic("STSerMock.SetPrincipalArnFunc: method is nil but STSer.SetPrincipalArn was just called")
+// SetAwsPrincipalArn calls SetAwsPrincipalArnFunc.
+func (mock *STSerMock) SetAwsPrincipalArn(s string) {
+	if mock.SetAwsPrincipalArnFunc == nil {
+		panic("STSerMock.SetAwsPrincipalArnFunc: method is nil but STSer.SetAwsPrincipalArn was just called")
 	}
 	callInfo := struct {
 		S string
 	}{
 		S: s,
 	}
-	mock.lockSetPrincipalArn.Lock()
-	mock.calls.SetPrincipalArn = append(mock.calls.SetPrincipalArn, callInfo)
-	mock.lockSetPrincipalArn.Unlock()
-	mock.SetPrincipalArnFunc(s)
+	mock.lockSetAwsPrincipalArn.Lock()
+	mock.calls.SetAwsPrincipalArn = append(mock.calls.SetAwsPrincipalArn, callInfo)
+	mock.lockSetAwsPrincipalArn.Unlock()
+	mock.SetAwsPrincipalArnFunc(s)
 }
 
-// SetPrincipalArnCalls gets all the calls that were made to SetPrincipalArn.
+// SetAwsPrincipalArnCalls gets all the calls that were made to SetAwsPrincipalArn.
 // Check the length with:
 //
-//	len(mockedSTSer.SetPrincipalArnCalls())
-func (mock *STSerMock) SetPrincipalArnCalls() []struct {
+//	len(mockedSTSer.SetAwsPrincipalArnCalls())
+func (mock *STSerMock) SetAwsPrincipalArnCalls() []struct {
 	S string
 } {
 	var calls []struct {
 		S string
 	}
-	mock.lockSetPrincipalArn.RLock()
-	calls = mock.calls.SetPrincipalArn
-	mock.lockSetPrincipalArn.RUnlock()
+	mock.lockSetAwsPrincipalArn.RLock()
+	calls = mock.calls.SetAwsPrincipalArn
+	mock.lockSetAwsPrincipalArn.RUnlock()
 	return calls
 }
 

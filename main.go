@@ -13,16 +13,16 @@ import (
 
 func run() error {
 	var clean bool
-	var duration int32
+	var awsSessionDuration int32
 	var awsRegion, awsRoleArn, idpID, awsProfile, spID, username string
 	var rootCmd = &cobra.Command{
 		Use:     "aws-sso-google",
-		Version: "0.6.0",
+		Version: "0.7.0",
 		Short:   "Acquire AWS STS credentials via Google Workspace SAML in a browser",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c := credential.New(awsProfile)
 			saml := saml.New(awsRoleArn, idpID, spID, username, clean)
-			sts := sts.New(awsProfile, awsRegion, awsRoleArn, duration)
+			sts := sts.New(awsProfile, awsRegion, awsRoleArn, awsSessionDuration)
 			a := auth.New(c, saml, sts)
 			cred, err := a.SAMLAuth()
 			if err != nil {
@@ -36,7 +36,7 @@ func run() error {
 	}
 
 	rootCmd.Flags().BoolVarP(&clean, "clean", "c", false, "Clean browser session")
-	rootCmd.Flags().Int32VarP(&duration, "duration", "d", 3600, "Credential duration in seconds")
+	rootCmd.Flags().Int32VarP(&awsSessionDuration, "aws-session-duration", "d", 3600, "AWS session duration in seconds")
 	rootCmd.Flags().StringVarP(&awsProfile, "aws-profile", "p", "", "AWS profile")
 	rootCmd.Flags().StringVarP(&awsRegion, "aws-region", "e", "", "AWS region")
 	rootCmd.Flags().StringVarP(&awsRoleArn, "aws-role-arn", "r", "", "AWS role arn")

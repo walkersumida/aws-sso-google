@@ -38,7 +38,7 @@ func (a *Auth) SAMLAuth() (string, error) {
 		return "", err
 	}
 
-	a.STS.SetPrincipalArn(samlRes.PrincipalArn)
+	a.STS.SetAwsPrincipalArn(samlRes.PrincipalArn)
 	a.STS.SetSAMLAssertion(samlRes.SAMLResponse)
 	stsRes, err := a.STS.AssumeRoleWithSAML()
 	if err != nil {

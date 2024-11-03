@@ -54,14 +54,14 @@ Usage:
   aws-sso-google [flags]
 
 Flags:
-  -p, --aws-profile string    AWS profile
-  -e, --aws-region string     AWS region
-  -r, --aws-role-arn string   AWS role arn
-  -c, --clean                 Clean browser session
-  -d, --duration int32        Credential duration in seconds (default 3600)
-  -h, --help                  help for aws-sso-google
-  -i, --idp-id string         Google SSO IdP identifier
-  -s, --sp-id string          Google SSO SP identifier
-  -u, --username string       Google Email address
-  -v, --version               version for aws-sso-google
+  -p, --aws-profile string           AWS profile
+  -e, --aws-region string            AWS region
+  -r, --aws-role-arn string          AWS role arn
+  -d, --aws-session-duration int32   AWS session duration in seconds (default 3600)
+  -c, --clean                        Clean browser session
+  -h, --help                         help for aws-sso-google
+  -i, --idp-id string                Google SSO IdP identifier
+  -s, --sp-id string                 Google SSO SP identifier
+  -u, --username string              Google Email address
+  -v, --version                      version for aws-sso-google
 ```

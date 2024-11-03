@@ -102,8 +102,8 @@ func newSAMLMock() *smock.SAMLerMock {
 
 func newSTSMock() *stsmock.STSerMock {
 	return &stsmock.STSerMock{
-		SetPrincipalArnFunc:  func(s string) {},
-		SetSAMLAssertionFunc: func(s string) {},
+		SetAwsPrincipalArnFunc: func(s string) {},
+		SetSAMLAssertionFunc:   func(s string) {},
 		AssumeRoleWithSAMLFunc: func() (*sts.Response, error) {
 			return &sts.Response{
 				AssumeRoleWithSAMLOutput: sdksts.AssumeRoleWithSAMLOutput{
