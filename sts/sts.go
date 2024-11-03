@@ -10,17 +10,17 @@ import (
 
 type STSer interface {
 	AssumeRoleWithSAML() (*Response, error)
-	SetPrincipalArn(string)
+	SetAwsPrincipalArn(string)
 	SetSAMLAssertion(string)
 }
 
 type STS struct {
-	AwsProfile    string
-	AwsRegion     string
-	AwsRoleArn    string
-	Duration      int32
-	PrincipalArn  string
-	SAMLAssertion string
+	AwsProfile         string
+	AwsRegion          string
+	AwsRoleArn         string
+	AwsSessionDuration int32
+	AwsPrincipalArn    string
+	SAMLAssertion      string
 }
 
 var _ STSer = &STS{}
@@ -29,17 +29,17 @@ type Response struct {
 	sdksts.AssumeRoleWithSAMLOutput
 }
 
-func New(awsProfile, awsRegion, awsRoleArn string, duration int32) *STS {
+func New(profile, region, roleArn string, duration int32) *STS {
 	return &STS{
-		AwsProfile: awsProfile,
-		AwsRegion:  awsRegion,
-		AwsRoleArn: awsRoleArn,
-		Duration:   duration,
+		AwsProfile:         profile,
+		AwsRegion:          region,
+		AwsRoleArn:         roleArn,
+		AwsSessionDuration: duration,
 	}
 }
 
-func (s *STS) SetPrincipalArn(principalArn string) {
-	s.PrincipalArn = principalArn
+func (s *STS) SetAwsPrincipalArn(principalArn string) {
+	s.AwsPrincipalArn = principalArn
 }
 
 func (s *STS) SetSAMLAssertion(samlAssertion string) {
@@ -66,8 +66,8 @@ func (s *STS) AssumeRoleWithSAML() (*Response, error) {
 	stsCli := sdksts.NewFromConfig(cfg)
 
 	input := &sdksts.AssumeRoleWithSAMLInput{
-		DurationSeconds: &s.Duration,
-		PrincipalArn:    &s.PrincipalArn,
+		DurationSeconds: &s.AwsSessionDuration,
+		PrincipalArn:    &s.AwsPrincipalArn,
 		RoleArn:         &s.AwsRoleArn,
 		SAMLAssertion:   &s.SAMLAssertion,
 	}
