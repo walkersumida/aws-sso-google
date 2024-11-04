@@ -18,13 +18,11 @@
 go install github.com/walkersumida/aws-sso-google@latest
 ```
 
-### Install executable binary
-
-TODO
-
 ### Install via Homebrew
 
-TODO
+```sh
+brew install walkersumida/tap/aws-sso-google
+```
 
 ## Usage
 
