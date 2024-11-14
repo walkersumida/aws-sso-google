@@ -81,6 +81,12 @@ func (s *SAML) Signin() (*Response, error) {
 		return nil, fmt.Errorf("could not get user data dir: %w", err)
 	}
 
+	if s.Clean {
+		if err := os.RemoveAll(userDataDir); err != nil {
+			return nil, fmt.Errorf("could not remove user data dir: %w", err)
+		}
+	}
+
 	context, err := pw.Chromium.LaunchPersistentContext(
 		userDataDir,
 		playwright.BrowserTypeLaunchPersistentContextOptions{
