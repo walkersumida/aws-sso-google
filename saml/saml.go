@@ -76,7 +76,7 @@ func (s *SAML) Signin() (*Response, error) {
 		return nil, fmt.Errorf("could not start playwright: %w", err)
 	}
 
-	userDataDir, err := path.UserDataDir()
+	userDataDir, err := path.UserDataDirForApp()
 	if err != nil {
 		return nil, fmt.Errorf("could not get user data dir: %w", err)
 	}

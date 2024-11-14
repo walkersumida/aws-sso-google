@@ -7,7 +7,7 @@ import (
 
 const AppName = "aws-sso-google"
 
-func UserDataDir() (string, error) {
+func UserDataDirForApp() (string, error) {
 	p, err := os.UserConfigDir()
 	if err != nil {
 		return "", err
@@ -16,7 +16,16 @@ func UserDataDir() (string, error) {
 	return fmt.Sprintf("%s/%s", p, AppName), nil
 }
 
-func CacheDir() (string, error) {
+func CreateCacheDirForApp() error {
+	p, err := CacheDirForApp()
+	if err != nil {
+		return err
+	}
+
+	return os.MkdirAll(p, 0700)
+}
+
+func CacheDirForApp() (string, error) {
 	p, err := os.UserCacheDir()
 	if err != nil {
 		return "", err
@@ -26,7 +35,7 @@ func CacheDir() (string, error) {
 }
 
 func CredentialsFile() (string, error) {
-	p, err := CacheDir()
+	p, err := CacheDirForApp()
 	if err != nil {
 		return "", err
 	}

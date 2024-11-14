@@ -67,6 +67,23 @@ func (c *Credential) Load() error {
 	}
 
 	if !exists {
+		cpath, err := path.CacheDirForApp()
+		if err != nil {
+			return err
+		}
+
+		folderExists, err := path.Exists(cpath)
+		if err != nil {
+			return err
+		}
+
+		if !folderExists {
+			err = path.CreateCacheDirForApp()
+			if err != nil {
+				return err
+			}
+		}
+
 		_, err = os.Create(p)
 		if err != nil {
 			return err
