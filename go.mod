@@ -6,7 +6,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/config v1.28.0
 	github.com/aws/aws-sdk-go-v2/service/sts v1.32.2
 	github.com/google/go-cmp v0.6.0
-	github.com/matryer/moq v0.5.0
+	github.com/matryer/moq v0.5.1
 	github.com/playwright-community/playwright-go v0.4702.0
 	github.com/spf13/cobra v1.8.1
 	golang.org/x/term v0.25.0
