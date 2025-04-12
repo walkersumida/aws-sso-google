@@ -3,18 +3,11 @@ run:
   timeout: 5m
 
 linters-settings:
-  errcheck:
-    ignore: fmt:.*,Read|Write|Close|Exec,io:Copy
   dupl:
     threshold: 100
   funlen:
     lines: 200
     statements: 200
-  goheader:
-    template: |-
-      Copyright 2019-present Facebook Inc. All rights reserved.
-      This source code is licensed under the Apache 2.0 license found
-      in the LICENSE file in the root directory of this source tree.
 linters:
   disable-all: true
   enable:
@@ -47,9 +40,6 @@ issues:
         - funlen
         - gosec
         - gocritic
-    - linters:
-        - unused
-      source: ent.Schema
     - path: dialect/sql/schema
       linters:
         - dupl
@@ -60,12 +50,6 @@ issues:
     - path: privacy/privacy.go
       linters:
         - stylecheck
-    - path: entc/load/schema.go
-      linters:
-        - staticcheck
-    - path: entc/gen/graph.go
-      linters:
-        - gocritic
     - path: \.go
       linters:
         - staticcheck
