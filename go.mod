@@ -1,6 +1,6 @@
 module github.com/walkersumida/aws-sso-google
 
-go 1.23.1
+go 1.24.0
 
 require (
 	github.com/aws/aws-sdk-go-v2/config v1.31.8
@@ -9,7 +9,7 @@ require (
 	github.com/matryer/moq v0.5.1
 	github.com/playwright-community/playwright-go v0.5200.0
 	github.com/spf13/cobra v1.10.1
-	golang.org/x/term v0.33.0
+	golang.org/x/term v0.35.0
 	gopkg.in/ini.v1 v1.67.0
 )
 
@@ -32,6 +32,6 @@ require (
 	github.com/spf13/pflag v1.0.9 // indirect
 	golang.org/x/mod v0.20.0 // indirect
 	golang.org/x/sync v0.8.0 // indirect
-	golang.org/x/sys v0.34.0 // indirect
+	golang.org/x/sys v0.36.0 // indirect
 	golang.org/x/tools v0.24.0 // indirect
 )
