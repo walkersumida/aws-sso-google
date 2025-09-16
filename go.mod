@@ -1,12 +1,12 @@
 module github.com/walkersumida/aws-sso-google
 
-go 1.23.1
+go 1.25
 
 require (
 	github.com/aws/aws-sdk-go-v2/config v1.31.8
 	github.com/aws/aws-sdk-go-v2/service/sts v1.38.4
 	github.com/google/go-cmp v0.7.0
-	github.com/matryer/moq v0.5.1
+	github.com/matryer/moq v0.6.0
 	github.com/playwright-community/playwright-go v0.5200.0
 	github.com/spf13/cobra v1.10.1
 	golang.org/x/term v0.33.0
@@ -30,8 +30,8 @@ require (
 	github.com/go-stack/stack v1.8.1 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.9 // indirect
-	golang.org/x/mod v0.20.0 // indirect
-	golang.org/x/sync v0.8.0 // indirect
+	golang.org/x/mod v0.23.0 // indirect
+	golang.org/x/sync v0.11.0 // indirect
 	golang.org/x/sys v0.34.0 // indirect
-	golang.org/x/tools v0.24.0 // indirect
+	golang.org/x/tools v0.30.0 // indirect
 )
