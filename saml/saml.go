@@ -144,16 +144,18 @@ func (s *SAML) Signin() (*Response, error) {
 	}
 
 	if s.Username != "" {
-		cnt, err := page.Locator("input[type=\"email\"]").Count()
-		if err != nil {
-			return nil, fmt.Errorf("could not count: %w", err)
-		}
-
-		if cnt > 0 {
-			if err := page.Locator("input[type=\"email\"]").First().Fill(s.Username); err != nil {
+		// Google renders the email field via JS, so wait for it explicitly.
+		// Timeout must be set because page.SetDefaultTimeout(0) disables it.
+		emailLoc := page.Locator("input[type=\"email\"], #identifierId").First()
+		if err := emailLoc.WaitFor(playwright.LocatorWaitForOptions{
+			State:   playwright.WaitForSelectorStateVisible,
+			Timeout: playwright.Float(15000),
+		}); err == nil {
+			if err := emailLoc.Fill(s.Username); err != nil {
 				return nil, fmt.Errorf("could not fill username: %w", err)
 			}
 		}
+		// On timeout (e.g. account chooser has no email field), fall back to manual input.
 	}
 
 	err = page.WaitForURL(AwsSAMLSigninURL, playwright.PageWaitForURLOptions{
